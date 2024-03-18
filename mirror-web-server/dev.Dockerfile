@@ -4,9 +4,7 @@ WORKDIR /app
 RUN npm i -g @nestjs/cli
 # yarn configuration files
 COPY package.json yarn.lock ./
-RUN yarn 
+RUN yarn install
 COPY . .
-RUN chmod +x ./auto-migrate.sh
 EXPOSE 3000 9000 9001 8080
-ENTRYPOINT [ "./auto-migrate.sh" ]
-CMD [ "dev" ]
+ENTRYPOINT ["sh", "-c", "yarn migrate:up && yarn build && yarn dev"]
